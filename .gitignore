@@ -5,3 +5,4 @@ client/.env
 server/.env
 server/request.rest
 server/ip_logs.txt
+.env
