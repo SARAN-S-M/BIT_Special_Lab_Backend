@@ -20,8 +20,8 @@ const app = require('./src/app.js');
 
 // const app = http.createServer(app);
 
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
+// app.listen(port, () => {
+//     console.log(`Server running on port ${port}`);
+// });
 
-// export default app;
+export default app;
