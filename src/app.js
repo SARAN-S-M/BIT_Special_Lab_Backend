@@ -5,13 +5,13 @@ const cors = require('cors');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'https://bit-special-lab-frontend.vercel.app'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
 }));
 
-const userRoutes = require('./User/index.js');
+const loginRoutes = require('./User/index.js');
 
-app.use('/api', userRoutes);
+app.use('/api', loginRoutes);
 
 module.exports = app;

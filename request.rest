@@ -1,0 +1,2 @@
+#write the request.rest file to test the API
+GET http://localhost:5000/api/v1/employee

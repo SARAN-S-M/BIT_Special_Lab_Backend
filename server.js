@@ -14,7 +14,7 @@ const app = require('./src/app.js');
 
 app.use(cors({
     origin: ['http://localhost:3000', 'https://bit-special-lab-frontend.vercel.app'],
-    methods: ['GET', 'POST', 'PUT'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: false,
 }));
 
@@ -22,8 +22,11 @@ app.use(cors({
 
 // const app = http.createServer(app);
 
-// app.listen(port, () => {
-//     console.log(`Server running on port ${port}`);
-// });
-
-export default app;
+if (process.env.DEV || 0) {
+    app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
+    });
+}
+else {
+    module.exports = app;
+}
