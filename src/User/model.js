@@ -20,12 +20,16 @@ const userSchema = new mongoose.Schema({
       required: true,
       enum: ['student', 'faculty', 'admin', 'mentor'], // Example roles, adjust as needed
       default: 'student' // You can set a default role here if needed
-  },
-  status: {
+    },
+    status: {
         type: Boolean,
         default: true
+    },
+    specialLab: {
+        type: String,
+        default: null // Default value is set to null
     }
-});
+  });
 
 const User = mongoose.model('User', userSchema);
 

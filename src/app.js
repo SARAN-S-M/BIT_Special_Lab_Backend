@@ -10,8 +10,10 @@ app.use(cors({
     credentials: true,
 }));
 
-const loginRoutes = require('./User/index.js');
+const UserRoutes = require('./User/index.js');
+const SpeicalLabRoutes = require('./SpecialLabs/index.js');
 
-app.use('/api', loginRoutes);
+app.use('/api/user', UserRoutes);
+app.use('/api/speciallabs', SpeicalLabRoutes);
 
 module.exports = app;

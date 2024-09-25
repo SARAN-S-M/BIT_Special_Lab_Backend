@@ -124,6 +124,34 @@ exports.unblockUser = async (req, res) => {
     }
 };
 
+exports.getRoleData = async (req, res) => {
+    try {
+        const { role } = req.body;
+
+        const users = await User.find({ role }, 'name email rollnumber');
+
+        console.log("users", users);
+
+        if (!users) {
+            console.log("Status 201");
+            return res.status(201).json({ error: 'No users found with this role' });
+        }
+
+        const transformedUsers = users.map(user => ({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            rollNumber: user.rollnumber // Changing the key here
+        }));
+
+        console.log("Status 200");
+        
+        res.status(200).json({ users: transformedUsers });
+
+    } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
 
 exports.login = async (req, res) => {
     try {
