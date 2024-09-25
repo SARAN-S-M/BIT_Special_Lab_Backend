@@ -8,5 +8,8 @@ const userController = require('./controller');
 // router.put('/blockUser', userController.blockUser);
 // router.put('/unblockUser', userController.unblockUser);
 router.post('/addSpecialLab', userController.addSpecialLab);
+router.delete('/removeSpecialLab', userController.removeSpecialLab);
+router.post('/addFaculty', userController.addFaculty);
+router.delete('/removeFaculty', userController.removeFaculty);
 
 module.exports = router;

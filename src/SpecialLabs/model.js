@@ -14,10 +14,16 @@ const specialLabSchema = new mongoose.Schema({
     type: String,
     default: null
   },
-  faculties: {
-    type: [String], // Array of strings for faculty names
-    default: null
-  },
+  faculties: [{
+    facultyName: {
+      type: String,
+      required: true
+    },
+    facultyEmail: {
+      type: String,
+      required: true
+    }
+  }],
   promoVideo: {
     type: String, // URL of the promotional video
     default: null
