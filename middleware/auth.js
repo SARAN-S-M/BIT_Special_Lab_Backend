@@ -1,10 +1,12 @@
 const jwt = require('jsonwebtoken');
-const Users = require('./model');
+const Users = require('../src/User/model');
 
 const verifyRoles = (allowedRoles) => async (req, res, next) => {
   try {
     // Extract the JWT token from the authorization header
-    const token = req.headers.authorization;
+    const tokenWithBearer = req.headers.authorization;
+
+    const token = tokenWithBearer.split(' ')[1];
 
     if (!token) {
       return res.status(401).json({ message: 'No token provided' });
@@ -14,7 +16,7 @@ const verifyRoles = (allowedRoles) => async (req, res, next) => {
     const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
     // Retrieve user details from the database using the email from the decoded token
-    const user = await Users.findOne({ email: decodedToken.email });
+    const user = await Users.findOne({ _id: decodedToken.userId });
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -27,6 +29,7 @@ const verifyRoles = (allowedRoles) => async (req, res, next) => {
     if (allowedRoles.includes(userRole)) {
       // If the user has an allowed role, attach the email to the request and proceed
       req.userEmail = user.email;
+      // res.setHeader('userEmail', user.email);
       next();
     } else {
       // If user's role doesn't match any of the allowed roles, return unauthorized

@@ -1,6 +1,7 @@
 const SpecialLab = require('./model');
 const User = require('../User/model');
 require('dotenv').config();
+const { hashId } = require('../../util/cryptoUtils');
 
 exports.addSpecialLab = async (req, res) => {
     try {
@@ -113,6 +114,116 @@ exports.removeFaculty = async (req, res) => {
         await existingSpecialLab.save();
 
         res.status(200).json({ message: 'Faculty removed successfully', specialLab: existingSpecialLab });
+    }
+    catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+exports.getLabsNames = async (req, res) => {
+    // console.log('getLabsNames');
+    try {
+        // Fetch special labs' names and codes
+        let specialLabs = await SpecialLab.find({}, { specialLabName: 1, specialLabCode: 1 });
+
+        // Secret key from environment variables
+        const secretKey = process.env.SECRET_KEY;
+
+        // console.log(secretKey);
+
+        // Hash the _id and map results
+        let labsWithHashedId = specialLabs.map(lab => {
+            return {
+                specialLabName: lab.specialLabName,
+                specialLabCode: lab.specialLabCode,
+                hashedId: hashId(lab._id, secretKey)  // hash the _id using the imported function
+            };
+        });
+
+        res.status(200).json({ labs: labsWithHashedId });
+    }
+    catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+exports.getLabDetailsById = async (req, res) => {
+    console.log('getLabDetailsById');
+    try {
+        // Extract the hashed ID from the request
+        const hashedId = req.params.id;
+        const secretKey = process.env.SECRET_KEY;
+
+        // Fetch all labs and find the one with the matching hash
+        let specialLabs = await SpecialLab.find();
+        const lab = specialLabs.find(lab => hashId(lab._id, secretKey) === hashedId);
+
+        if (!lab) {
+            return res.status(404).json({ error: 'Lab not found' });
+        }
+
+        // console.log(lab);
+        // map the lab destils with correct name as key before sending it to the client
+        labDetails = {
+            SpecialLabName: lab.specialLabName,
+            SpecialLabCode: lab.specialLabCode,
+            SpecialLabDescription: lab.specialLabDescription,
+            faculties: lab.faculties.map(faculty => ({
+                facultyName: faculty.facultyName,
+                facultyEmail: faculty.facultyEmail
+            })),
+            promoVideoUrl: lab.promoVideo
+        };
+        console.log(labDetails);
+        // Send the lab details
+        res.status(200).json({ labDetails });
+    }
+    catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+exports.FacultyGetLabDetails = async (req, res) => {
+    try {
+        // console.log("user eamil",req.userEmail);
+        // console.log(req.headers);
+        const facultyEmail = req.userEmail;
+        // console.log(facultyEmail);
+
+        let faculty = await User.findOne({ email: facultyEmail });
+
+        if (!faculty) {
+            return res.status(404).json({ error: 'Faculty not found.' });
+        }
+
+        if (faculty.role !== 'faculty') {
+            return res.status(200).json({ error: 'User is not a faculty.' });
+        }
+
+        // console.log(facultyEmail);
+
+        let specialLabs = await SpecialLab.find({ 'faculties.facultyEmail': facultyEmail });
+
+        // console.log('specialLabs', specialLabs);
+
+        if (!specialLabs) {
+            return res.status(200).json({ error: 'No Special Labs found.' });
+        }
+
+        let labDetails = specialLabs.map(lab => {
+            return {
+                specialLabName: lab.specialLabName,
+                specialLabCode: lab.specialLabCode,
+                specialLabDescription: lab.specialLabDescription,
+                faculties: lab.faculties.map(faculty => ({
+                    facultyName: faculty.facultyName,
+                    facultyEmail: faculty.facultyEmail
+                })),
+                promoVideoUrl: lab.promoVideo
+            };
+        });
+        labDetails = labDetails[0];
+        res.status(200).json({ labDetails });
     }
     catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });

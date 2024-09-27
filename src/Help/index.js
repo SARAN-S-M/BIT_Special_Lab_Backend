@@ -1,19 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('./controller');
+const verifyRoles = require('../../middleware/auth');
 
+const roles = {
+    ADMIN: 'admin',
+    STUDENT: 'student',
+    FACULTY: 'faculty',
+    MENTOR: 'mentor'
+};
 
-router.get('/HelpMaterials', userController.getHelpMaterials);
-router.post('/addHelpMaterial', userController.addHelpMaterial);
-router.delete('/removeHelpMaterial', userController.removeHelpMaterial);
-// // router.post('/login', userController.login);
-// // router.post('/addUser', userController.addUser);
-// // router.delete('/removeUser', userController.removeUser);
-// // router.put('/blockUser', userController.blockUser);
-// // router.put('/unblockUser', userController.unblockUser);
-// router.post('/addSpecialLab', userController.addSpecialLab);
-// router.delete('/removeSpecialLab', userController.removeSpecialLab);
-// router.post('/addFaculty', userController.addFaculty);
-// router.delete('/removeFaculty', userController.removeFaculty);
+router.get('/HelpMaterials', verifyRoles([roles.ADMIN, roles.STUDENT]), userController.getHelpMaterials);
+router.post('/addHelpMaterial', verifyRoles([roles.ADMIN]), userController.addHelpMaterial);
+router.delete('/removeHelpMaterial', verifyRoles([roles.ADMIN]), userController.removeHelpMaterial);
 
 module.exports = router;

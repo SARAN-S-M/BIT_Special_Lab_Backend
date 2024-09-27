@@ -12,6 +12,9 @@ const createUserToken = (user, statusCode, res) => {
 
 // Add User Controller
 exports.addUser = async (req, res) => {
+    console.log("addUser", req.userEmail);
+    //console log the headers
+    console.log("addUser", req.headers);
     // console.log("addUser", req.body);
     // console.log("addUser", req.body.name,  req.body.email, req.body.rollNumber, req.body.role);
     try {
@@ -156,6 +159,8 @@ exports.getRoleData = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const { email } = req.body;
+        console.log(email);
+        // const { email } = "faculty@bitsathy.ac.in";
         let user = await User.findOne({ email }); // Changed const to let
 
 
