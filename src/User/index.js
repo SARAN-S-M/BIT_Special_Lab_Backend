@@ -18,5 +18,6 @@ router.delete('/removeUser', verifyRoles([roles.ADMIN]), userController.removeUs
 router.put('/blockUser', verifyRoles([roles.ADMIN]), userController.blockUser);
 router.put('/unblockUser', verifyRoles([roles.ADMIN]), userController.unblockUser);
 router.post('/getRoleData', verifyRoles([roles.ADMIN]), userController.getRoleData);
+router.get('/student/getStudentDetails', verifyRoles([roles.STUDENT]), userController.getStudentDetails);
 
 module.exports = router;

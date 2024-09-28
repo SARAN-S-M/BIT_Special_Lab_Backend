@@ -28,7 +28,16 @@ const userSchema = new mongoose.Schema({
     specialLab: {
         type: String,
         default: null // Default value is set to null
-    }
+    },
+    specialLabCode: {
+        type: String,
+        default: null
+    },
+    InterviewProgress: {
+        type: String,
+        enum: [null, "Slot Booked", "Accepted", "Rejected", "Absent", "Mentor Approved", "Mentor Rejected", "Faculty Scheduled"],
+        default: null
+    },
   });
 
 const User = mongoose.model('User', userSchema);

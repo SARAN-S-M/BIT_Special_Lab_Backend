@@ -6,7 +6,6 @@ const createUserToken = (user, statusCode, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.ACCESS_TOKEN_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_IN,
     });
-
     res.status(statusCode).json({ token, userId: user._id, role: user.role });
 };
 
@@ -156,14 +155,42 @@ exports.getRoleData = async (req, res) => {
     }
 }
 
+exports.getStudentDetails = async (req, res) => {
+    try {
+        const studentEmail = req.userEmail;
+
+        let student = await User.findOne({ email: studentEmail });
+
+        if (!student) {
+            return res.status(404).json({ error: 'Student not found.' });
+        }
+
+        if (student.role !== 'student') {
+            return res.status(200).json({ error: 'User is not a student.' });
+        }
+
+        let studentDetails = {
+            name: student.name,
+            email: student.email,
+            rollNumber: student.rollnumber,
+            specialLabs: student.specialLabs,
+            specialLabCode: student.specialLabCode,
+            InterviewProgress: student.InterviewProgress
+        };
+
+        res.status(200).json({ studentDetails });
+    }
+    catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
 exports.login = async (req, res) => {
     try {
         const { email } = req.body;
         console.log(email);
-        // const { email } = "faculty@bitsathy.ac.in";
+
         let user = await User.findOne({ email }); // Changed const to let
-
-
 
         if (!user) {
 
