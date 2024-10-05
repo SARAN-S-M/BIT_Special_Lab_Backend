@@ -17,5 +17,13 @@ router.delete('/removeFaculty', verifyRoles([roles.ADMIN]), userController.remov
 router.get('/getlabsNames', verifyRoles([roles.ADMIN, roles.STUDENT]), userController.getLabsNames);
 router.get('/getLabDetailsById/:id', verifyRoles([roles.ADMIN, roles.STUDENT]), userController.getLabDetailsById);
 router.get('/faculty/getLabDetails', verifyRoles([roles.FACULTY]), userController.FacultyGetLabDetails);
+router.post('/faculty/updateLabDetails', verifyRoles([roles.FACULTY]), userController.FacultyUpdateLabDetails);
+router.post('/addSlot', verifyRoles([roles.FACULTY]), userController.addSlot);
+router.get('/getSlots', verifyRoles([roles.FACULTY]), userController.getSlots);
+router.get('/getSlotById/:id', verifyRoles([roles.STUDENT]), userController.getSlotsByLabId);
+router.delete('/deleteSlot', verifyRoles([roles.FACULTY]), userController.deleteSlot);
+router.post('/bookSlot/:id', verifyRoles([roles.STUDENT]), userController.bookSlot);
+router.get('/student-interview', verifyRoles([roles.FACULTY]), userController.studentInterview);
+router.post('/student-interview/result', verifyRoles([roles.FACULTY]), userController.studentInterviewResult);
 
 module.exports = router;
