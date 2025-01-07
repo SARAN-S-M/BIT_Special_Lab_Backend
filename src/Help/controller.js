@@ -11,7 +11,7 @@ exports.getHelpMaterials = async (req, res) => {
 }
 
 exports.addHelpMaterial = async (req, res) => {
-    console.log('addHelpMaterial');
+    // console.log('addHelpMaterial');
     try {
         const { question, answer } = req.body;
 
@@ -39,11 +39,11 @@ exports.addHelpMaterial = async (req, res) => {
 
 
 exports.removeHelpMaterial = async (req, res) => {
-    console.log('removeHelpMaterial');
+    // console.log('removeHelpMaterial');
     try {
         const { id } = req.body;
 
-        console.log('id', id);
+        // console.log('id', id);
 
         let existingHelpMaterial = await Help.findById(id);
 

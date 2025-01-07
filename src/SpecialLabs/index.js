@@ -25,5 +25,9 @@ router.delete('/deleteSlot', verifyRoles([roles.FACULTY]), userController.delete
 router.post('/bookSlot/:id', verifyRoles([roles.STUDENT]), userController.bookSlot);
 router.get('/student-interview', verifyRoles([roles.FACULTY]), userController.studentInterview);
 router.post('/student-interview/result', verifyRoles([roles.FACULTY]), userController.studentInterviewResult);
+router.post('/student-changeLab-request', verifyRoles([roles.STUDENT]), userController.studentInterviewRequest);
+router.get('/student-changeLab-request', verifyRoles([roles.FACULTY]), userController.GetstudentInterviewRequest);
+router.post('/changeLab-update-date-time', verifyRoles([roles.FACULTY]), userController.changeLabDateTime);
+router.post('/changeLab-result', verifyRoles([roles.FACULTY]), userController.changeLabResult);
 
 module.exports = router;

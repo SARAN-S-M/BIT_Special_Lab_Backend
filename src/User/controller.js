@@ -11,9 +11,9 @@ const createUserToken = (user, statusCode, res) => {
 
 // Add User Controller
 exports.addUser = async (req, res) => {
-    console.log("addUser", req.userEmail);
+    // console.log("addUser", req.userEmail);
     //console log the headers
-    console.log("addUser", req.headers);
+    // console.log("addUser", req.headers);
     // console.log("addUser", req.body);
     // console.log("addUser", req.body.name,  req.body.email, req.body.rollNumber, req.body.role);
     try {
@@ -51,8 +51,8 @@ exports.removeUser = async (req, res) => {
 
         // Check if the email was provided
         if (!email) {
-            console.log("Status 400");
-            console.log(req);
+            // console.log("Status 400");
+            // console.log(req);
             return res.status(400).json({ error: 'Email is required' });
         }
 
@@ -61,17 +61,17 @@ exports.removeUser = async (req, res) => {
 
         // If user not found, return a 404 error
         if (!user) {
-            console.log("Status 404");
+            // console.log("Status 404");
             return res.status(404).json({ error: 'User not found' });
         }
 
         // Return success response if user is deleted
-        console.log("Status 200");
+        // console.log("Status 200");
         return res.status(200).json({ message: 'User removed successfully' });
     } catch (error) {
         // Handle any internal server errors
         console.error('Error removing user:', error);
-        console.log("Status 500");
+        // console.log("Status 500");
         return res.status(500).json({ error: 'Internal server error' });
     }
 };
@@ -132,10 +132,10 @@ exports.getRoleData = async (req, res) => {
 
         const users = await User.find({ role }, 'name email rollnumber');
 
-        console.log("users", users);
+        // console.log("users", users);
 
         if (!users) {
-            console.log("Status 201");
+            // console.log("Status 201");
             return res.status(201).json({ error: 'No users found with this role' });
         }
 
@@ -146,7 +146,7 @@ exports.getRoleData = async (req, res) => {
             rollNumber: user.rollnumber // Changing the key here
         }));
 
-        console.log("Status 200");
+        // console.log("Status 200");
         
         res.status(200).json({ users: transformedUsers });
 
@@ -173,7 +173,7 @@ exports.getStudentDetails = async (req, res) => {
             name: student.name,
             email: student.email,
             rollNumber: student.rollnumber,
-            specialLabs: student.specialLabs,
+            specialLab: student.specialLab,
             specialLabCode: student.specialLabCode,
             InterviewProgress: student.InterviewProgress
         };
@@ -188,7 +188,7 @@ exports.getStudentDetails = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const { email } = req.body;
-        console.log(email);
+        // console.log(email);
 
         let user = await User.findOne({ email }); // Changed const to let
 

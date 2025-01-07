@@ -65,7 +65,37 @@ const specialLabSchema = new mongoose.Schema({
         type: String,
         default: null
     },
-    slots: [slotSchema]
+    slots: [slotSchema],
+    StudentInterviewRequests: [
+        {
+            studentName: {
+                type: String,
+                required: true,
+            },
+            studentEmail: {
+                type: String,
+                required: true,
+            },
+            rollNumber: {
+                type: String,
+                required: true,
+            },
+            reason: {
+                type: String,
+                required: true,
+            },
+            InterviewDate: {
+                type: Date,
+                required: false,
+                default: null
+            },
+            InterviewTime: {
+                type: Date,
+                required: false,
+                default: null
+            }
+        }
+    ]
 });
 
 // Create the model
